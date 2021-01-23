@@ -1,3 +1,4 @@
+import os
 import argparse
 import pickle
 import torch
@@ -28,12 +29,12 @@ def run_iter(batch, model, device, training):
             prob = model(context, attention_mask=padding_mask)[0]
     return prob
 
-def training(train_loader, valid_loader, model, optimizer, epochs, eval_steps, device):
+def training(args, train_loader, valid_loader, model, optimizer, device):
     train_metrics = Accuracy()
     best_valid_acc = 0
     total_iter = 0
     criterion = torch.nn.CrossEntropyLoss()
-    for epoch in range(epochs):
+    for epoch in range(args.epochs):
         train_trange = tqdm(enumerate(train_loader), total=len(train_loader), desc='training')
         train_loss = 0
         train_metrics.reset()
@@ -51,14 +52,23 @@ def training(train_loader, valid_loader, model, optimizer, epochs, eval_steps, d
             train_trange.set_postfix(loss= train_loss/(i+1),
                                      **{train_metrics.name: train_metrics.print_score()})
             
-            if total_iter % eval_steps == 0:
-                valid_acc = testing(valid_loader, model, device, criterion, valid=True)
+            if total_iter % args.eval_steps == 0:
+                valid_acc = testing(valid_loader, model, device, valid=True)
                 if valid_acc > best_valid_acc:
                     best_valid_acc = valid_acc
-                    torch.save(model, 'best_val.pkl')
+                    torch.save(model, os.path.join(args.model_dir, 'fine-tuned_bert.pkl'))
+    
+    # Final validation
+    valid_acc = testing(valid_loader, model, device, valid=True)
+    if valid_acc > best_valid_acc:
+        best_valid_acc = valid_acc
+        torch.save(model, os.path.join(args.model_dir, 'fine-tuned_bert.pkl'))
+    print('Best Valid Accuracy:{}'.format(best_valid_acc))
 
-def testing(dataloader, model, device, criterion, valid):
+
+def testing(dataloader, model, device, valid):
     metrics = Accuracy()
+    criterion = torch.nn.CrossEntropyLoss()
     trange = tqdm(enumerate(dataloader), total=len(dataloader), desc='validation' if valid else 'testing')
     model.eval()
     total_loss = 0
@@ -79,18 +89,26 @@ def main():
     parser = argparse.ArgumentParser(description='OGBN-Arxiv (GNN)')
     parser.add_argument('--device', type=int, default=0) 
     parser.add_argument('--num_classes', type=int, default=40)
-    parser.add_argument('--max_seq_length', type=int, default=400)
+    parser.add_argument('--max_seq_length', type=int, default=500)
     parser.add_argument('--batch_size', type=int, default=8)
     parser.add_argument('--lr', type=float, default=2e-5)
-    parser.add_argument('--epochs', type=int, default=3)
+    parser.add_argument('--epochs', type=int, default=2)
     parser.add_argument('--eval_steps', type=int, default=4000)
     parser.add_argument('--pretrain_model', type=str, default='bert')
+    parser.add_argument('--model_dir', default='models', type=str,
+                        help='Directory to the model checkpoint.')
     args = parser.parse_args()
     
+    if os.path.isdir(args.model_dir) == False:
+        os.makedirs(args.model_dir)
+        print('Create folder: {}'.format(args.model_dir))
+    else:
+        print('{} exists!'.format(args.model_dir))
+
     device = torch.device('cuda:{}'.format(args.device) if torch.cuda.is_available()
                           else 'cpu')
-    
-    train, valid, test = load_data(args.pretrain_model)
+
+    train, valid, test = load_data('config.json')
     train_dataset = CitationDataset(train, max_length=args.max_seq_length)
     valid_dataset = CitationDataset(valid, max_length=args.max_seq_length)
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, 
@@ -104,10 +122,10 @@ def main():
     model = BertForSequenceClassification.from_pretrained('bert-base-uncased', 
                                                           num_labels=args.num_classes).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-    training(train_loader, valid_loader, model, optimizer, args.epochs, args.eval_steps, device) 
+    training(args, train_loader, valid_loader, model, optimizer, device) 
     
-    model = torch.load('best_val.pkl')
-    test_acc = testing(test_loader, model, device, criterion, valid=False)
+    model = torch.load(os.path.join(args.model_dir, 'fine-tuned_bert.pkl'))
+    test_acc = testing(test_loader, model, device, valid=False)
     print("Test Accuracy:{}".format(test_acc))
     
 if __name__ == '__main__':

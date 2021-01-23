@@ -1,0 +1,12 @@
+{    
+    "encoder": "bert",
+    "node2paper": "dataset/ogbn_arxiv/mapping/node2paper.pkl",
+    "paper2node": "dataset/ogbn_arxiv/mapping/paper2node.pkl",
+    "raw_text_path": "dataset/ogbn_arxiv/raw/titleabs.tsv",
+    "train": "dataset/ogbn_arxiv/bert/train.pkl",
+    "valid": "dataset/ogbn_arxiv/bert/valid.pkl",
+    "test": "dataset/ogbn_arxiv/bert/test.pkl",
+    "bert_models": "models/fine-tuned_bert.pkl",
+    "node_features": "node_feat/bert_feat.pkl" 
+}
+

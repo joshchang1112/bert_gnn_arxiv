@@ -1,12 +1,16 @@
 import pickle
+import os
+import json
 
-def load_data(model_type):
+def load_data(config_path):
     """ Load dataset preprocess by tokenizer."""
-    with open('dataset/ogbn_arxiv/{}/train.pkl'.format(model_type), 'rb') as f:
+    with open(config_path) as f:
+        config = json.load(f)
+    with open(config['train'], 'rb') as f:
         train = pickle.load(f)
-    with open('dataset/ogbn_arxiv/{}/val.pkl'.format(model_type), 'rb') as f:
+    with open(config['valid'], 'rb') as f:
         valid = pickle.load(f)
-    with open('dataset/ogbn_arxiv/{}/test.pkl'.format(model_type), 'rb') as f:
+    with open(config['test'], 'rb') as f:
         test = pickle.load(f)
     return train, valid, test
 
