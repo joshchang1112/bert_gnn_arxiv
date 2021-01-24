@@ -23,7 +23,7 @@ You can see the details about how to train the code in `pytorch` and `tensorflow
 We've also created the following hands-on colab tutorials in `pytorch` and `tensorflow`
 that will allow you to get start faster:
 
-*   [Pytorch](https://github.com/tensorflow/neural-structured-learning/blob/master/g3doc/tutorials/graph_keras_mlp_cora.ipynb)
+*   [Pytorch](https://github.com/joshchang1112/bert_gnn_arxiv/blob/master/pytorch/fine_tuned_bert_gnn_pytorch.ipynb)
 *   [Tensorflow](https://github.com/tensorflow/neural-structured-learning/blob/master/g3doc/tutorials/graph_keras_lstm_imdb.ipynb)
 
 
