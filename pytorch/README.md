@@ -1,4 +1,4 @@
-# Node classification with fine-tuned BERT encoder & GNN using Pytorch
+# Node classification with fine-tuned BERT encoder &amp; GNN (Pytorch)
 
 This repository contains a pytorch implementation of fine-tuned BERT encoder & GNN 
 for `ogbn-arxiv` node classification.
