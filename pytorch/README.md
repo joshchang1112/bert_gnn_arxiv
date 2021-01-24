@@ -3,9 +3,7 @@
 This repository contains a pytorch implementation of fine-tuned BERT encoder & GNN 
 for `ogbn-arxiv` node classification.
 
-If you did not have the GPU environment to run this code, you can check the colab tutorial that will allow you to get start faster:)
-
-[Colab tutorial](https://colab.research.google.com/github/joshchang1112/bert_gnn_arxiv/blob/master/pytorch/fine_tuned_bert_gnn_pytorch.ipynb)
+If you did not have the GPU environment to run this code, you can check the [**colab tutorial**](https://colab.research.google.com/github/joshchang1112/bert_gnn_arxiv/blob/master/pytorch/fine_tuned_bert_gnn_pytorch.ipynb) or [**github notebook**](https://github.com/joshchang1112/bert_gnn_arxiv/blob/master/pytorch/fine_tuned_bert_gnn_pytorch.ipynb) that will allow you to get start faster:)
 
 ## Installation
 
@@ -54,7 +52,7 @@ bash download_dataset.sh
 python3 make_bert_dataset.py
 ```
 
-3.  Fine-tuned BERT on ogbn-arxiv with default parameters. (Test Accuracy: ~71.7%)
+3.  Fine-tuned BERT on ogbn-arxiv with default parameters. (Test Accuracy: ~72.1%)
 ```
 python3 fine_tuned_bert.py 
 ```
@@ -69,13 +67,11 @@ python3 encode_features.py
 python3 gnn.py --num_layers=2 --lr=5e-3 --bert_features=True
 ```
 
-You can also run `python3 gnn.py` to train GCN on ogbn-arxiv using the embeddings pretrained by skip-gram model [2] which provided from Open Graph Benchmark. (Test Accuracy: ~71.7%)
+You can also run `python3 gnn.py` to train GCN on ogbn-arxiv using the embeddings pretrained by skip-gram model [[2]](#references) which provided from Open Graph Benchmark. (Test Accuracy: ~71.7%)
 
 If you do not want to train BERT model by yourself, or you are only interested in how GNN works powerfully by using fine-tuned BERT node features, you can just download the model and node features trained in the above method using GeForce GTX 1080 Ti. 
 
-* [Fine-tuned BERT](https://www.dropbox.com/s/tldrd4tc69tgy9n/fine-tuned_bert.pkl?dl=0)
-
-* [BERT node features](https://www.dropbox.com/s/ra52bzas7shb10j/bert_feat.pkl?dl=0)
+Download Link: [Fine-tuned BERT](https://www.dropbox.com/s/tldrd4tc69tgy9n/fine-tuned_bert.pkl?dl=0), [BERT node features](https://www.dropbox.com/s/ra52bzas7shb10j/bert_feat.pkl?dl=0)
 
 Finally, it is very excited that the results by **our proposed method even beats the 1st place in Opne Graph Benchmark Leaderboard**! We encourage users to experiment further by trying different architecture to encode features and using other advanced GNN models for multi-class node classification on `ogbn-arxiv` dataset.
 
