@@ -73,7 +73,7 @@ If you do not want to train BERT model by yourself, or you are only interested i
 
 Download Link: [Fine-tuned BERT](https://www.dropbox.com/s/tldrd4tc69tgy9n/fine-tuned_bert.pkl?dl=0), [BERT node features](https://www.dropbox.com/s/ra52bzas7shb10j/bert_feat.pkl?dl=0)
 
-Finally, it is very excited that the results by **our proposed method even beats the 1st place in Opne Graph Benchmark Leaderboard**! We encourage users to experiment further by trying different architecture to encode features and using other advanced GNN models for multi-class node classification on `ogbn-arxiv` dataset.
+Finally, it is very excited that the results by **our proposed method even beats the 1st place in Open Graph Benchmark Leaderboard**! We encourage users to experiment further by trying different architecture to encode features and using other advanced GNN models for multi-class node classification on `ogbn-arxiv` dataset.
 
 ## References
 
