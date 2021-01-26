@@ -10,7 +10,7 @@ Therefore, we want to bring the advantages in BERT to the citation network, and 
 In this repository, we will explore the use of fine-tuned BERT, how to encode node features using BERT model, 
 and using citation graph and node features to train GNN models. 
 
-**Now, it supports both Pytorch and Tensorflow framework!**
+**Now, it just support Pytorch framework!**
 
 The step is as follows:
 
@@ -26,7 +26,6 @@ We've also created the following hands-on colab tutorials in `pytorch` and `tens
 that will allow you to get start faster:
 
 *   [Pytorch](https://github.com/joshchang1112/bert_gnn_arxiv/blob/master/pytorch/fine_tuned_bert_gnn_pytorch.ipynb)
-*   [Tensorflow](https://github.com/tensorflow/neural-structured-learning/blob/master/g3doc/tutorials/graph_keras_lstm_imdb.ipynb)
 
 
 ## Experiments
