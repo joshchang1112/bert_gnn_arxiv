@@ -1,5 +1,7 @@
 # Multi-class Classification with fine-tuned BERT &amp; GNN
 
+![](bert_gnn_overview.jpeg)
+
 ## Overview
 
 BERT is the most powerful neural networks model in NLP area. Graph Neural Networks(GNN) is also one of the most popular model now. 
