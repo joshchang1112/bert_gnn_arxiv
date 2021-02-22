@@ -30,7 +30,7 @@ def encode_features(data, data_len, paper2node_dict, model):
     for i, row in tqdm(data.iterrows()):
         if row['Id'] not in paper2node_dict:
             continue
-        context = row['Title'] + row['Abstract']
+        context = "[CLS] " + row['Title'] + row['Abstract'] + " [SEP]"
         tokenize_context = tokenizer.tokenize(context)
         context_len = len(tokenize_context)
 
@@ -39,7 +39,7 @@ def encode_features(data, data_len, paper2node_dict, model):
     
         context_id = tokenizer.convert_tokens_to_ids(tokenize_context)
         context_id = torch.LongTensor(context_id).unsqueeze(0).cuda()
-        feat = model.bert(context_id)[1]
+        feat = model.bert(context_id)[0].squeeze(0)[0]
         node_id = paper2node_dict[row['Id']]
         node_feats[node_id, :] = feat
         torch.cuda.empty_cache()
@@ -50,6 +50,7 @@ def encode_features(data, data_len, paper2node_dict, model):
 def main():
     parser = argparse.ArgumentParser(description='Encode Node Features')
     parser.add_argument('--device', type=int, default=0)
+    parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--node_feat_dir', type=str, default='node_feat',
                         help='Directory to the fine-tuned node features.')
     args = parser.parse_args()
@@ -61,7 +62,7 @@ def main():
         config = json.load(f)
     
     # Load data & model
-    MODEL_PATH = config['bert_models']
+    MODEL_PATH = config['bert_models'].format(args.seed)
     data = pd.read_csv(config['raw_text_path'], sep='\t')
     with open(config['node2paper'], 'rb') as f:
         node2paper_dict = pickle.load(f)
@@ -83,7 +84,7 @@ def main():
     node_feats = encode_features(data, len(node2paper_dict),
                                  paper2node_dict, model)
 
-    torch.save(node_feats, config['node_features'])
+    torch.save(node_feats, config['node_features'].format(args.seed))
 
 if __name__ == '__main__':
     main()

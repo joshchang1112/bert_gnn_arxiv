@@ -8,6 +8,7 @@ from utils import load_data
 from dataset import CitationDataset
 from metrics import Accuracy
 from transformers import BertForSequenceClassification
+from utils import set_seed
 
 def run_iter(batch, model, device, training):
     context, context_lens = batch['context'].to(device), batch['length'].to(device)
@@ -56,13 +57,13 @@ def training(args, train_loader, valid_loader, model, optimizer, device):
                 valid_acc = testing(valid_loader, model, device, valid=True)
                 if valid_acc > best_valid_acc:
                     best_valid_acc = valid_acc
-                    torch.save(model, os.path.join(args.model_dir, 'fine-tuned_bert.pkl'))
+                    torch.save(model, os.path.join(args.model_dir, 'fine-tuned_bert_{}.pkl'.format(args.seed)))
     
     # Final validation
     valid_acc = testing(valid_loader, model, device, valid=True)
     if valid_acc > best_valid_acc:
         best_valid_acc = valid_acc
-        torch.save(model, os.path.join(args.model_dir, 'fine-tuned_bert.pkl'))
+        torch.save(model, os.path.join(args.model_dir, 'fine-tuned_bert_{}.pkl'.format(args.seed)))
     print('Best Valid Accuracy:{}'.format(best_valid_acc))
 
 
@@ -89,11 +90,12 @@ def main():
     parser = argparse.ArgumentParser(description='OGBN-Arxiv (GNN)')
     parser.add_argument('--device', type=int, default=0) 
     parser.add_argument('--num_classes', type=int, default=40)
-    parser.add_argument('--max_seq_length', type=int, default=500)
-    parser.add_argument('--batch_size', type=int, default=8)
+    parser.add_argument('--max_seq_length', type=int, default=400)
+    parser.add_argument('--batch_size', type=int, default=4)
     parser.add_argument('--lr', type=float, default=2e-5)
-    parser.add_argument('--epochs', type=int, default=2)
-    parser.add_argument('--eval_steps', type=int, default=4000)
+    parser.add_argument('--epochs', type=int, default=3)
+    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--eval_steps', type=int, default=8000)
     parser.add_argument('--pretrain_model', type=str, default='bert')
     parser.add_argument('--model_dir', default='models', type=str,
                         help='Directory to the model checkpoint.')
@@ -108,6 +110,7 @@ def main():
     device = torch.device('cuda:{}'.format(args.device) if torch.cuda.is_available()
                           else 'cpu')
 
+    set_seed(SEED=args.seed)
     train, valid, test = load_data('config.json')
     train_dataset = CitationDataset(train, max_length=args.max_seq_length)
     valid_dataset = CitationDataset(valid, max_length=args.max_seq_length)
@@ -123,8 +126,8 @@ def main():
                                                           num_labels=args.num_classes).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     training(args, train_loader, valid_loader, model, optimizer, device) 
+    model = torch.load(os.path.join(args.model_dir, 'fine-tuned_bert_{}.pkl'.format(args.seed)))
     
-    model = torch.load(os.path.join(args.model_dir, 'fine-tuned_bert.pkl'))
     test_acc = testing(test_loader, model, device, valid=False)
     print("Test Accuracy:{}".format(test_acc))
     

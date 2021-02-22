@@ -37,9 +37,9 @@ Model   |  Test Accuracy  | Validation Accuracy | Hardware |
 :-----: | :-------------:| :-------------:| :-------------:|
 GCN <br/> (official, Rank 27 in Leaderboard) | 0.7174 &pm; <br/> 0.0029 | 0.7300 &pm; 0.0017 | GeForce RTX 2080 <br/> (11GB GPU)
 GAT+label reuse+self KD <br/> (official, **Rank 1** in Leaderboard) | **0.7416** &pm; <br/> 0.0008 | 0.7514 &pm; 0.0004 | GeForce RTX 2080Ti <br/> (11GB GPU)
-GCN (this repo.)    |  0.7203 &pm; <br/> 0.0020 | 0.7311 &pm; 0.0008   | GeForce GTX 1080 Ti <br/> (11GB GPU)
-Fine-tuned BERT    |  0.7215 &pm; <br/> 0.0035   | 0.7294 &pm; 0.0018   |  GeForce GTX 1080 Ti <br/> (11GB GPU)
-Fine-tuned BERT+GCN <br/> (**Beat Rank 1!**) |   **0.7491** &pm; <br/> 0.0024 | 0.7642 &pm; 0.0004   | GeForce GTX 1080 Ti <br/> (11GB GPU)
+GCN (this repo.)    |  0.7189 &pm; <br/> 0.0020 | 0.7310 &pm; 0.0009   | GeForce RTX 2070 <br/> (8GB GPU)
+Fine-tuned BERT    |  0.7204 &pm; <br/> 0.0034   | 0.7324 &pm; 0.0019   |  GeForce RTX 2070 <br/> (8GB GPU)
+Fine-tuned BERT+GCN <br/> (**Beat Rank 1!**) |   **0.7487** &pm; <br/> 0.0026 | 0.7630 &pm; 0.0007   | GeForce RTX 2070 <br/> (8GB GPU)
 
 ## Concat information
 For help or issues using our code, please contact Sung-Ping Chang (`joshspchang@gmail.com`).

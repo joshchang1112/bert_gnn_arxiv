@@ -9,6 +9,7 @@ from torch_geometric.nn import GCNConv, SAGEConv
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator
 
 from metrics import Logger
+from utils import set_seed
 
 
 class GCN(torch.nn.Module):
@@ -121,6 +122,7 @@ def main():
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--epochs', type=int, default=500)
     parser.add_argument('--runs', type=int, default=10)
+    parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--bert_features', type=bool, default=False)
     args = parser.parse_args()
     print(args)
@@ -136,7 +138,7 @@ def main():
 
     data = dataset[0]
     if args.bert_features:
-        data.x = torch.load(config['node_features'])
+        data.x = torch.load(config['node_features'].format(10))
     data.adj_t = data.adj_t.to_symmetric()
     data = data.to(device)
 
@@ -156,6 +158,7 @@ def main():
     logger = Logger(args.runs, args)
 
     for run in range(args.runs):
+        set_seed(SEED=args.seed+run)
         model.reset_parameters()
         optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
         for epoch in range(1, 1 + args.epochs):

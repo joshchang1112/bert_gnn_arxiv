@@ -14,7 +14,7 @@ def tokenize(data, paper2node, idx, label):
         if int(row['Id']) not in paper2node:
             continue
         processed = {}
-        processed['context'] = tokenizer.tokenize(text=row['Title']+row['Abstract'])
+        processed['context'] = tokenizer.tokenize(text="[CLS] " + row['Title']+row['Abstract'] + " [SEP]")
         processed['context'] = tokenizer.convert_tokens_to_ids(processed['context'])
         processed['length'] = len(processed['context'])
         processed['id'] = paper2node[int(row['Id'])]

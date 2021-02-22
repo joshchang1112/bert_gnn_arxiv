@@ -67,13 +67,16 @@ python3 encode_features.py
 python3 gnn.py --num_layers=2 --lr=5e-3 --bert_features=True
 ```
 
-You can also run `python3 gnn.py` to train GCN on ogbn-arxiv using the embeddings pretrained by skip-gram model [[2]](#references) which provided from Open Graph Benchmark. (Test Accuracy: ~71.7%)
+You can also run `python3 gnn.py` to train GCN on ogbn-arxiv using the embeddings pretrained by skip-gram model [[2]](#references) which provided from Open Graph Benchmark. (Test Accuracy: ~71.8%)
 
 If you do not want to train BERT model by yourself, or you are only interested in how GNN works powerfully by using fine-tuned BERT node features, you can just download the model and node features trained in the above method using GeForce GTX 1080 Ti. 
 
-Download Link: [Fine-tuned BERT](https://www.dropbox.com/s/tldrd4tc69tgy9n/fine-tuned_bert.pkl?dl=0), [BERT node features](https://www.dropbox.com/s/ra52bzas7shb10j/bert_feat.pkl?dl=0)
+Download Link: [Fine-tuned BERT](https://www.dropbox.com/s/6zlln7alz0mtmy4/fine-tuned_bert_10.pkl?dl=0), [BERT node features](https://www.dropbox.com/s/gbw1rl2ayxnl91q/bert_feat_10.pkl?dl=0)
+
+Furthermore, you can just run `sh run.sh` to reproduce our results. If you want to see the details of results, `log.txt` records the accuracy about valid and test set in different seeds.
 
 Finally, it is very excited that the results by **our proposed method even beats the 1st place in Open Graph Benchmark Leaderboard**! We encourage users to experiment further by trying different architecture to encode features and using other advanced GNN models for multi-class node classification on `ogbn-arxiv` dataset.
+
 
 ## References
 
