@@ -33,6 +33,7 @@ that will allow you to get start faster:
 The experiments below are from this repo and Open Graph Benchmark Leaderboard. 
 
 All the results are the average at least over 10 runs.
+
 Model   |  Test Accuracy  | Validation Accuracy | Hardware |
 :-----: | :-------------:| :-------------:| :-------------:|
 GCN <br/> (official, Rank 27 in Leaderboard) | 0.7174 &pm; <br/> 0.0029 | 0.7300 &pm; 0.0017 | GeForce RTX 2080 <br/> (11GB GPU)
